@@ -46,7 +46,7 @@
             </StackPanel>
             <Button Margin="5">Сбросить</Button>
         </StackPanel>
-        <materialDesign:ColorZone Grid.Row="1" Grid.Column="1" Mode="SecondaryLight">
+        <materialDesign:ColorZone Grid.Row="1" Grid.Column="1" Mode="SecondaryMid">
             <ListView ItemsSource="{Binding forms}" Name="FormsList" HorizontalContentAlignment="Stretch">
                 <ListView.ItemTemplate>
                     <DataTemplate>

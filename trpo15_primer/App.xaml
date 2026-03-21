@@ -13,7 +13,7 @@
                     <SolidColorBrush x:Key="MaterialDesign.Brush.Primary" Color="#00fa9a"/>
                     <SolidColorBrush x:Key="MaterialDesign.Brush.Primary.Foreground" Color="#000"/>
                     <SolidColorBrush x:Key="MaterialDesign.Brush.Secondary" Color="#7FFF00" />
-                    <SolidColorBrush x:Key="MaterialDesign.Brush.Secondary.Foreground" Color="#dfeaeb" />
+                    <SolidColorBrush x:Key="MaterialDesign.Brush.Secondary.Foreground" Color="#fff" />
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
