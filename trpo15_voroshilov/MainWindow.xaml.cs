@@ -19,7 +19,7 @@ namespace trpo15_voroshilov
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(new Pages.ClientPage());
+            MainFrame.Navigate(new Pages.LoginPage());
         }
     }
 }

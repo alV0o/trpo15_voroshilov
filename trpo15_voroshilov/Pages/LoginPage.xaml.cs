@@ -20,6 +20,7 @@ namespace trpo15_voroshilov.Pages
     /// </summary>
     public partial class LoginPage : Page
     {
+        public string pinCode { get; set; } = null!;
         public LoginPage()
         {
             InitializeComponent();
@@ -27,12 +28,19 @@ namespace trpo15_voroshilov.Pages
 
         private void To_ManagerPage(object sender, RoutedEventArgs e)
         {
-
+            if (pinCode == "1234")
+            {
+                NavigationService.Navigate(new ClientPage(true));
+            }
+            else
+            {
+                MessageBox.Show("Неверный пинкод!");
+            }
         }
 
         private void To_ClientPage(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new ClientPage(false));
         }
     }
 }

@@ -4,7 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:trpo15_voroshilov.Pages"
-      mc:Ignorable="d" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ClientPage"
       DataContext="{Binding RelativeSource={RelativeSource Self}}">
@@ -17,12 +18,129 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.ColumnSpan="2" Margin="10">
+            <TextBlock Text="Поиск"/>
+            <TextBox Text="{Binding searchQuery, UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="Введите название для поиска..." TextChanged="TextBox_TextChanged"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <TextBlock Text="Фильтры" HorizontalAlignment="Center" Margin="10"/>
+                <Line X1="0" X2="100" Stroke="Black" Stretch="Fill" Margin="10,0"/>
+                <CheckBox Click="categoryBtn_Click" Name="categoryBtn" Content="Категории"/>
+
+                <ItemsControl ItemsSource="{Binding categoryService.Categories}">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=categoryBtn, Path=IsChecked}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="10, 0, 10, 10" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Click="categoryCheckBox_Click" x:Name="categoryCheckBox" Content="{Binding Name}" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=categoryBtn, Path=IsChecked}" Value="False">
+                                    <Setter TargetName="categoryCheckBox" Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <CheckBox Click="brandBtn_Click" Name="brandBtn" Content="Бренды"/>
+
+                <ItemsControl ItemsSource="{Binding brandService.Brands}">
+                    <ItemsControl.Style>
+                        <Style TargetType="ItemsControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=brandBtn, Path=IsChecked}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ItemsControl.Style>
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="10, 0, 10, 10" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Click="brandCheckBox_Click" x:Name="brandCheckBox" Content="{Binding Name}" />
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=brandBtn, Path=IsChecked}" Value="False">
+                                    <Setter TargetName="brandCheckBox" Property="IsChecked" Value="False"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock Text="Цена" HorizontalAlignment="Center"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox TextChanged="TextBox_TextChanged" Text="{Binding startSum, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" materialDesign:HintAssist.Hint="От: "/>
+                    <TextBox TextChanged="TextBox_TextChanged" Text="{Binding endSum, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" materialDesign:HintAssist.Hint="До: "/>
+                </Grid>
+                <TextBlock Text="Сортировка" HorizontalAlignment="Center" Margin="10"/>
+                <Line X1="0" X2="100" Stroke="Black" Stretch="Fill" Margin="10,0"/>
+                <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="10">
+                    <ComboBox.Items>
+                        <ComboBoxItem Tag="Name">По наименованию</ComboBoxItem>
+                        <ComboBoxItem Tag="LowPrice">По цене (убывание)</ComboBoxItem>
+                        <ComboBoxItem Tag="HighPrice">По цене (возрастание)</ComboBoxItem>
+                        <ComboBoxItem Tag="LowCount">По кол-ву (убывание)</ComboBoxItem>
+                        <ComboBoxItem Tag="HighCount">По кол-ву (возрастание)</ComboBoxItem>
+                    </ComboBox.Items>
+                </ComboBox>
+                <Button Content="Сбросить" Margin="10"/>
+                <StackPanel Margin="10">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isManager}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding isManager}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <Button Content="Категории" Click="categoryManager_Click"/>
+                    <Button Content="Теги" Click="tagManager_Click"/>
+                    <Button Content="Бренды" Click="brandManager_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
         <ListView Grid.Row="1"
                   Grid.Column="1"
                   ItemsSource="{Binding service.Products}"
-                  HorizontalContentAlignment="Stretch">
+                  HorizontalContentAlignment="Stretch"
+                  Margin="10"
+                  Name="ProductsList">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -75,5 +193,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <WrapPanel Grid.Row="2" Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding service.Products.Count, StringFormat='{}Всего записей: {0}'}"/>
+            <TextBlock Text="{Binding Items.Count, ElementName=ProductsList, StringFormat='{} Показано: {0}'}"/>
+        </WrapPanel>
     </Grid>
 </Page>
