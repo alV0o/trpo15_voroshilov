@@ -24,15 +24,28 @@ namespace trpo15_voroshilov.Pages
     public partial class ManagerPage : Page
     {
         public object collection { get; set; }
+        public object selected { get; set; }
         CategoryService categoryService = new();
         TagService tagService = new();
         BrandService brandService = new();
         public ManagerPage(object obj)
         {
             InitializeComponent();
-            if (obj is Tag) collection = tagService.Tags;
-            else if (obj is Category) collection = categoryService.Categories;
-            else if (obj is Brand) collection = brandService.Brands;
+            if (obj is Tag)
+            {
+                collection = tagService.Tags;
+                selected = new Tag();
+            }
+            else if (obj is Category)
+            {
+                collection = categoryService.Categories;
+                selected = new Category();
+            }
+            else if (obj is Brand)
+            {
+                collection = brandService.Brands;
+                selected = new Brand();
+            }
 
             DataContext = this;
         }
