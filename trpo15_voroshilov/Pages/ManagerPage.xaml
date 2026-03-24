@@ -13,12 +13,46 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListView Grid.Column="1" Margin="10" ItemsSource="{Binding collection}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Click="backBtn_Click" Content="&lt;" HorizontalAlignment="Left" Margin="5"/>
+
+
+        <ListView SelectedItem="{Binding selected}" Grid.Row="1" Grid.Column="1" Margin="10" ItemsSource="{Binding collection}" SelectionChanged="ListView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Label Grid.Column="1" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding type}"/>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock>
+                <Run Text="Выбрано: "/>
+                <Run Text="{Binding selected.Name, UpdateSourceTrigger=PropertyChanged}"/>
+            </TextBlock>
+            <Button Content="Новый экземпляр" Grid.Row="1" Click="newItem_Click"/>
+            <StackPanel Grid.Row="3">
+                <TextBlock Text="Название" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding name, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <Button Click="saveBtn_Click" Grid.Row="5" Content="Сохранить"/>
+            <Button Margin="0,10,0,0" Click="resetBtn_Click" Grid.Row="6" Content="Сбросить"/>
+            <Button Margin="0,10,0,0" Click="deleteBtn_Click" Grid.Row="7" Content="Удалить"/>
+        </Grid>
     </Grid>
 </Page>

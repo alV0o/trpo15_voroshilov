@@ -185,5 +185,10 @@ namespace trpo15_voroshilov.Pages
             Brand b = new();
             NavigationService.Navigate(new ManagerPage(b));
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            productsView.Refresh();
+        }
     }
 }
