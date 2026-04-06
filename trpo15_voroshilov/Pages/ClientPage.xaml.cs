@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,18 +24,37 @@ namespace trpo15_voroshilov.Pages
     /// <summary>
     /// Логика взаимодействия для ClientPage.xaml
     /// </summary>
-    public partial class ClientPage : Page
+    public partial class ClientPage : Page, INotifyPropertyChanged
     {
-        public Trpo15VoroshilovContext db = DBService.Instance.Context;
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+
+
+
         public ProductService service { get; set; } = new();
-        public ICollectionView productsView { get; set; } 
-        public string searchQuery { get; set; } = null!;
+        public ICollectionView productsView { get; set; }
+        private string _searchQuery = null!;
+        public string searchQuery { get => _searchQuery; set => SetProperty(ref _searchQuery, value); }
         public CategoryService categoryService { get; set; } = new();
         List<string> categoryNames = new();
         public BrandService brandService { get; set; } = new();
         List<string> brandNames = new();
-        public int startSum { get; set; } = 0;
-        public int endSum { get; set; } = 0;
+        private int _startSum = 0;
+        public int startSum { get => _startSum; set =>SetProperty(ref _startSum, value); }
+        private int _endSum = 0;
+        public int endSum { get =>_endSum; set => SetProperty(ref _endSum, value); }
+        public Product SelectedProduct { get; set; } = null!;
 
         public bool isManager { get; set; } = false;
         public ClientPage(bool _isManager)
@@ -147,6 +167,8 @@ namespace trpo15_voroshilov.Pages
             productsView.SortDescriptions.Clear();
             var cb = (ComboBox)sender;
             var selected = (ComboBoxItem)cb.SelectedItem;
+            if (selected == null)
+                return;
             switch (selected.Tag)
             {
                 case "Name":
@@ -188,7 +210,47 @@ namespace trpo15_voroshilov.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            service.GetAll();
             productsView.Refresh();
+        }
+
+        private void ResetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            productsView.SortDescriptions.Clear();
+            categoryNames.Clear();
+            brandNames.Clear();
+            startSum = 0;
+            endSum = 0;
+            searchQuery = null!;
+            categoryService.GetAll();
+            brandService.GetAll();
+            sortBox.SelectedItem = null;
+            productsView.Refresh();
+        }
+
+        private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
+        {
+            service.Remove(SelectedProduct);
+        }
+
+        private void MenuItemView_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddEditProductPage(SelectedProduct));
+        }
+
+        private void ProductsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void newProduct_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddEditProductPage(null));
         }
     }
 }

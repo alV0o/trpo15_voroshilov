@@ -107,7 +107,7 @@
                 </Grid>
                 <TextBlock Text="Сортировка" HorizontalAlignment="Center" Margin="10"/>
                 <Line X1="0" X2="100" Stroke="Black" Stretch="Fill" Margin="10,0"/>
-                <ComboBox SelectionChanged="ComboBox_SelectionChanged" Margin="10">
+                <ComboBox x:Name="sortBox" materialDesign:HintAssist.Hint="Выберите сортировку" SelectionChanged="ComboBox_SelectionChanged" Margin="10">
                     <ComboBox.Items>
                         <ComboBoxItem Tag="Name">По наименованию</ComboBoxItem>
                         <ComboBoxItem Tag="LowPrice">По цене (убывание)</ComboBoxItem>
@@ -116,7 +116,7 @@
                         <ComboBoxItem Tag="HighCount">По кол-ву (возрастание)</ComboBoxItem>
                     </ComboBox.Items>
                 </ComboBox>
-                <Button Content="Сбросить" Margin="10"/>
+                <Button Content="Сбросить" Margin="10" Click="ResetBtn_Click"/>
                 <StackPanel Margin="10">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
@@ -133,15 +133,37 @@
                     <Button Content="Категории" Click="categoryManager_Click"/>
                     <Button Content="Теги" Click="tagManager_Click"/>
                     <Button Content="Бренды" Click="brandManager_Click"/>
+                    <Button Content="Новый продукт" Click="newProduct_Click"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
         <ListView Grid.Row="1"
                   Grid.Column="1"
                   ItemsSource="{Binding service.Products}"
+                  SelectedItem="{Binding SelectedProduct}"
                   HorizontalContentAlignment="Stretch"
                   Margin="10"
-                  Name="ProductsList">
+                  Name="ProductsList"
+                  MouseDoubleClick="ProductsList_MouseDoubleClick">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <ContextMenu.Style>
+                        <Style TargetType="ContextMenu" BasedOn="{StaticResource MaterialDesignContextMenu}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isManager}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding isManager}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContextMenu.Style>
+                    <MenuItem Header="Просмотреть" Click="MenuItemView_Click"/>
+                    <MenuItem Header="Редактировать" Click="MenuItemEdit_Click"/>
+                    <MenuItem Header="Удалить" Click="MenuItemDelete_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>

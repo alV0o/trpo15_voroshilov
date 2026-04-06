@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\
 trpo15_voroshilov
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\App.xaml
-5-504293359
-22-266561267
-2232143350
-2311297608614
-MainWindow.xaml;Pages\ClientPage.xaml;Pages\LoginPage.xaml;Pages\ManagerPage.xaml;Styles\Default.xaml;
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\App.xaml
+7-1519159291
+22-1903175295
+25495509103
+231-298120555
+MainWindow.xaml;Pages\AddEditProductPage.xaml;Pages\ClientPage.xaml;Pages\LoginPage.xaml;Pages\ManagerPage.xaml;Pages\ViewProductPage.xaml;Styles\Default.xaml;
 
-True
+False
 

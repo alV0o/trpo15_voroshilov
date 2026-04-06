@@ -316,3 +316,7 @@ C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\refin
 C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\trpo15_voroshilov.pdb
 C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\trpo15_voroshilov.genruntimeconfig.cache
 C:\voroshilov\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\ref\trpo15_voroshilov.dll
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\Pages\AddEditProductPage.g.cs
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\Pages\ViewProductPage.g.cs
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\Pages\AddEditProductPage.baml
+D:\ProgrammingAll\3kurs\trpo15_voroshilov\trpo15_voroshilov\obj\Debug\net8.0-windows\Pages\ViewProductPage.baml

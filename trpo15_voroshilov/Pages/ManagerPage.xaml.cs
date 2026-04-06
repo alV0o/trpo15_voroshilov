@@ -234,14 +234,11 @@ namespace trpo15_voroshilov.Pages
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (selected is Tag)
-            {
-                Tag temp = (Tag)selected;
-                if (temp.Id != 0)
-                {
-
-                }
-            }
+            if (selected is Tag) tagService.Remove((Tag)selected);
+            else if (selected is Brand) brandService.Remove((Brand)selected);
+            else if (selected is Category) categoryService.Remove((Category)selected);
+            selected = null!;
+            name = null!;
         }
     }
 }
