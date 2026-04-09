@@ -14,15 +14,62 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Content="&lt;" Click="BackBtn_Click"/>
+        <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Label FontSize="25" Grid.Row="0" Content="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBlock Grid.Row="0" Text="{Binding Price}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <TextBlock Grid.Row="1" Text="{Binding Rating}" HorizontalAlignment="Left"/>
+            <Label FontSize="25" FontWeight="Bold" Grid.Row="0" Content="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top">
+                <Run Text="Цена: "/>
+                <Run FontWeight="Bold" Text="{Binding Price, StringFormat=N2}"/>
+                <Run Text=" руб."/>
+            </TextBlock>
+            <TextBlock Grid.Row="1" Text="{Binding Rating, StringFormat='🌟 {0}'}" HorizontalAlignment="Left"/>
+            <TextBlock Grid.Row="2" Text="Описание:"/>
+            <TextBlock Grid.Row="3" FontSize="20" Text="{Binding Description}" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Row="4" HorizontalAlignment="Right">
+                <Run Text="Создан: "/>
+                <Run FontWeight="Bold" Text="{Binding CreatedAt}" Language="RU-ru"/>
+            </TextBlock>
+            <TextBlock Grid.Row="5" HorizontalAlignment="Right">
+                <Run Text="Остаток: "/>
+                <Run Text="{Binding Stock}" FontWeight="Bold"/>
+            </TextBlock>
+            <TextBlock Grid.Row="4">
+                <Run Text="Категория: "/>
+                <Run Text="{Binding Category.Name, Mode=OneWay}" FontWeight="Bold"/>
+            </TextBlock>
+            <TextBlock Grid.Row="5">
+                <Run Text="Бренд: "/>
+                <Run Text="{Binding Brand.Name, Mode=OneWay}" FontWeight="Bold"/>
+            </TextBlock>
+            <TextBlock Grid.Row="6">
+                <Run Text="Теги: "/>
+                <ItemsControl Grid.Row="4" ItemsSource="{Binding Tags}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                            
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, StringFormat='#{0} '}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TextBlock>
         </Grid>
     </Grid>
 </Page>

@@ -40,8 +40,6 @@ namespace trpo15_voroshilov.Pages
             return true;
         }
 
-
-
         CategoryService categoryService = new();
         TagService tagService = new();
         BrandService brandService = new();
@@ -73,6 +71,7 @@ namespace trpo15_voroshilov.Pages
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
         public ICollectionView managerView { get; set; }
         public ManagerPage(object obj)
         {
@@ -108,40 +107,39 @@ namespace trpo15_voroshilov.Pages
         {
             if (selected is Tag)
             {
-                Tag temp = (Tag) selected;
-                if (temp.Id != 0)
-                {
-                    selected = new Tag();
-                    temp = (Tag)selected;
-                    name = temp.Name;
-                }
+                selected = new Tag();
+                Tag temp = (Tag)selected;
+                name = temp.Name;
             }
             else if (selected is Category)
             {
-                Category temp = (Category) selected;
-                if (temp.Id != 0)
-                {
-                    selected = new Category();
-                    temp = (Category)selected;
-                    name = temp.Name;
-                }
+                selected = new Category();
+                Category temp = (Category)selected;
+                name = temp.Name;
             }
             else if (selected is Brand)
             {
+                selected = new Brand();
                 Brand temp = (Brand)selected;
-                if (temp.Id != 0)
-                {
-                    selected = new Brand();
-                    temp = (Brand)selected;
-                    name = temp.Name;
-                }
+                name = temp.Name;
             }
         }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (Validation.GetHasError(nameBox))
+            {
+                MessageBox.Show("Введите название!");
+                return;
+            }
             if (selected is Tag)
             {
+                var tagNames = tagService.Tags.Where(x => x.Name == name).ToList();
+                if(tagNames.Count > 0)
+                {
+                    MessageBox.Show("Такой тег уже существует!");
+                    return;
+                }
                 Tag temp = (Tag)selected;
                 if (temp.Id != 0)
                 {
@@ -156,12 +154,20 @@ namespace trpo15_voroshilov.Pages
                     selected = temp;
                     tagService.Add((Tag)selected);
                 }
+                selected = new Tag();
             }
             else if (selected is Category)
             {
+                var categoryNames = categoryService.Categories.Where(x => x.Name == name).ToList();
+                if (categoryNames.Count > 0)
+                {
+                    MessageBox.Show("Такая категория уже существует!");
+                    return;
+                }
                 Category temp = (Category)selected;
                 if (temp.Id != 0)
                 {
+
                     selected = null;
                     temp.Name = name;
                     selected = temp;
@@ -173,9 +179,17 @@ namespace trpo15_voroshilov.Pages
                     selected = temp;
                     categoryService.Add((Category)selected);
                 }
+                selected = new Category();
             }
             else if (selected is Brand)
             {
+                var brandNames = brandService.Brands.Where(x => x.Name == name).ToList();
+                if (brandNames.Count > 0)
+                {
+                    MessageBox.Show("Такой бренд уже существует!");
+                    return;
+                }
+
                 Brand temp = (Brand)selected;
                 if (temp.Id != 0)
                 {
@@ -190,7 +204,9 @@ namespace trpo15_voroshilov.Pages
                     selected = temp;
                     brandService.Add((Brand)selected);
                 }
+                selected = new Brand();
             }
+            name = null!;
             managerView.Refresh();
         }
 
@@ -234,11 +250,56 @@ namespace trpo15_voroshilov.Pages
 
         private void deleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (selected is Tag) tagService.Remove((Tag)selected);
-            else if (selected is Brand) brandService.Remove((Brand)selected);
-            else if (selected is Category) categoryService.Remove((Category)selected);
-            selected = null!;
+
+            if (selected is Tag)
+            {
+                Tag temp = (Tag)selected;
+                if (temp.Id == 0)
+                {
+                    MessageBox.Show("Выберите тег");
+                    return;
+                }
+                if (MessageBox.Show($"Вы уверены что хотите удалить тег - {temp.Name}?", "Удаление", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+                tagService.Remove((Tag)selected);
+                selected = new Tag();
+            }
+            else if (selected is Brand)
+            {
+                Brand temp = (Brand)selected;
+                if (temp.Id == 0)
+                {
+                    MessageBox.Show("Выберите бренд");
+                    return;
+                }
+                int count = brandService.Brands.Where(x => x.Name == temp.Name).ToArray()[0].Products.Count();
+                if (MessageBox.Show($"Бренд - \"{temp.Name}\" хранит {count} товаров. Вы уверены что хотите удалить бренд - \"{temp.Name}\"?", "Удаление", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+                brandService.Remove((Brand)selected);
+                selected = new Brand();
+            }
+            else if (selected is Category)
+            {
+                Category temp = (Category)selected;
+                if (temp.Id == 0)
+                {
+                    MessageBox.Show("Выберите категорию");
+                    return;
+                }
+                int count = categoryService.Categories.Where(x => x.Name == temp.Name).ToArray()[0].Products.Count();
+                if (MessageBox.Show($"Категория - \"{temp.Name}\" хранит {count} товаров. Вы уверены что хотите удалить категорию - \"{temp.Name}\"?", "Удаление", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+                categoryService.Remove((Category)selected);
+                selected = new Category();
+            }
             name = null!;
+
         }
     }
 }

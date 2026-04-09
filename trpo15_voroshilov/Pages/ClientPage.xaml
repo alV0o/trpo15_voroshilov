@@ -5,12 +5,16 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:trpo15_voroshilov.Pages"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:validators="clr-namespace:trpo15_voroshilov.Validators"
+      xmlns:converters="clr-namespace:trpo15_voroshilov.Convertors"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ClientPage"
       DataContext="{Binding RelativeSource={RelativeSource Self}}"
       Loaded="Page_Loaded">
-
+    <Page.Resources>
+        <converters:StockConverter x:Key="StockConverter"/>
+    </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -102,8 +106,26 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox TextChanged="TextBox_TextChanged" Text="{Binding startSum, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" materialDesign:HintAssist.Hint="От: "/>
-                    <TextBox TextChanged="TextBox_TextChanged" Text="{Binding endSum, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" materialDesign:HintAssist.Hint="До: "/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBox x:Name="startBox" Grid.Column="1" materialDesign:HintAssist.Hint="От: ">
+                        <Binding Path="startSum" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:CorrectIntValidation ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+
+                    <TextBox x:Name="endBox" Grid.Column="3" materialDesign:HintAssist.Hint="До: ">
+                        <Binding Path="endSum" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <validators:CorrectIntValidation ValidatesOnTargetUpdated="True"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox>
+                    <Button Click="SortByPrice_Click" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="1" Content="Отсортировать"/>
                 </Grid>
                 <TextBlock Text="Сортировка" HorizontalAlignment="Center" Margin="10"/>
                 <Line X1="0" X2="100" Stroke="Black" Stretch="Fill" Margin="10,0"/>
@@ -137,85 +159,87 @@
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
-        <ListView Grid.Row="1"
-                  Grid.Column="1"
+        <materialDesign:ColorZone Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalContentAlignment="Stretch"
+                    Margin="10"
+                    Mode="SecondaryMid">
+            <ListView
                   ItemsSource="{Binding service.Products}"
                   SelectedItem="{Binding SelectedProduct}"
                   HorizontalContentAlignment="Stretch"
-                  Margin="10"
                   Name="ProductsList"
                   MouseDoubleClick="ProductsList_MouseDoubleClick">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <ContextMenu.Style>
-                        <Style TargetType="ContextMenu" BasedOn="{StaticResource MaterialDesignContextMenu}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding isManager}" Value="False">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding isManager}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ContextMenu.Style>
-                    <MenuItem Header="Просмотреть" Click="MenuItemView_Click"/>
-                    <MenuItem Header="Редактировать" Click="MenuItemEdit_Click"/>
-                    <MenuItem Header="Удалить" Click="MenuItemDelete_Click"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="{Binding Name}"/>
-                        <TextBlock Grid.Row="0" HorizontalAlignment="Right">
-                            <Run Text="Цена: "/>
-                            <Run Text="{Binding Price}"/>
-                        </TextBlock>
-                        
-                        <TextBlock Grid.Row="1">
-                            <Run Text="🌟 "/>
-                            <Run Text="{Binding Rating}"/>
-                        </TextBlock>
-                        <TextBlock Grid.Row="2">
-                            <Run Text="Категория: "/>
-                            <Run Text="{Binding Category.Name}"/>
-                        </TextBlock>
-                        <TextBlock Grid.Row="3" Text="{Binding Description}"/>
-                        <TextBlock Grid.Row="3" HorizontalAlignment="Right">
-                            <Run Text="Остаток: "/>
-                            <Run Text="{Binding Stock}"/>
-                        </TextBlock>
-                        <ItemsControl Grid.Row="4" ItemsSource="{Binding Tags}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock>
-                                        <Run Text=" #"/>
-                                        <Run Text="{Binding Name}"/>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <ContextMenu.Style>
+                            <Style TargetType="ContextMenu" BasedOn="{StaticResource MaterialDesignContextMenu}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding isManager}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding isManager}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContextMenu.Style>
+                        <MenuItem Header="Просмотреть" Click="MenuItemView_Click"/>
+                        <MenuItem Header="Редактировать" Click="MenuItemEdit_Click"/>
+                        <MenuItem Header="Удалить" Click="MenuItemDelete_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="2">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource MaterialDesignToolBarMainPanelBorderStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Stock, Converter={StaticResource StockConverter}, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#ffd129"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Stock, Converter={StaticResource StockConverter}, UpdateSourceTrigger=PropertyChanged}" Value="False">
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" FontSize="22" Text="{Binding Name}"/>
+                                <TextBlock Grid.Row="0" HorizontalAlignment="Right" Text="{Binding Price, StringFormat='Цена: {0:N2} руб.'}"/>
+                                <TextBlock Grid.Row="1" Text="{Binding Rating, StringFormat='🌟 {0}'}"/>
+                                <TextBlock Grid.Row="2" Text="{Binding Category.Name, StringFormat='Категория: {0}'}"/>
+                                <TextBlock Grid.Row="3" Text="{Binding Description}"/>
+                                <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="{Binding Stock, StringFormat='Остаток: {0}'}"/>
+                                <ItemsControl Grid.Row="4" ItemsSource="{Binding Tags}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name, StringFormat='#{0} '}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </materialDesign:ColorZone>
 
         <WrapPanel Grid.Row="2" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding service.Products.Count, StringFormat='{}Всего записей: {0}'}"/>

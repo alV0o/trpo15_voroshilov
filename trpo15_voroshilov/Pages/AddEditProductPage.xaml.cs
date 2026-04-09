@@ -52,7 +52,18 @@ namespace trpo15_voroshilov.Pages
 
         private string GetDataProduct(Product _product)
         {
-            //Не выходит назад при пустом создании нового продукта!!!!
+            if (string.IsNullOrEmpty(_product.Name) ||
+                string.IsNullOrEmpty(_product.Description) ||
+                string.IsNullOrEmpty(_product.Price.ToString()) ||
+                string.IsNullOrEmpty(_product.Rating.ToString()) ||
+                _product.Brand == null ||
+                _product.Category == null ||
+                string.IsNullOrEmpty(_product.Stock.ToString()))
+            {
+                return string.Empty;
+            }
+
+
             List<string> data = new() {
                 _product.Name,
                 _product.Description,
@@ -60,13 +71,13 @@ namespace trpo15_voroshilov.Pages
                 _product.Rating.ToString(),
                 _product.Brand.Name,
                 _product.Category.Name,
-                _product.CreatedAt.ToString(),
                 _product.Stock.ToString()
             };
             foreach(var tag in _product.Tags)
             {
                 data.Add(tag.Name);
             }
+
             return string.Join(" ", data);
         }
 
@@ -104,8 +115,21 @@ namespace trpo15_voroshilov.Pages
                 return;
             }
 
+            if (Validation.GetHasError(priceBox) ||
+                Validation.GetHasError(nameBox) ||
+                Validation.GetHasError(descBox) ||
+                Validation.GetHasError(stockBox) ||
+                Validation.GetHasError(ratingBox) ||
+                Product.Brand == null ||
+                Product.Category == null)
+            {
+                MessageBox.Show("Введите корректные данные!");
+                return;
+            }
+
             if (Product.Id == 0)
             {
+                Product.CreatedAt = DateOnly.FromDateTime(DateTime.Now);
                 new ProductService().Add(Product);
             }
             else

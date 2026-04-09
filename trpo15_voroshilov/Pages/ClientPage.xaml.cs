@@ -40,7 +40,8 @@ namespace trpo15_voroshilov.Pages
             return true;
         }
 
-
+        private int firstSumForFilterByPrice = 0;
+        private int lastSumForFilterByPrice = 0;
 
         public ProductService service { get; set; } = new();
         public ICollectionView productsView { get; set; }
@@ -100,10 +101,10 @@ namespace trpo15_voroshilov.Pages
             if (!isPresentedBrand && brandNames.Count > 0)
                 return false;
 
-            if (startSum > 0 && startSum > product.Price)
+            if (firstSumForFilterByPrice > product.Price)
                 return false;
             
-            if (endSum > 0 && endSum < product.Price)
+            if (lastSumForFilterByPrice > 0 && lastSumForFilterByPrice < product.Price)
                 return false;
 
             return true;
@@ -221,6 +222,8 @@ namespace trpo15_voroshilov.Pages
             brandNames.Clear();
             startSum = 0;
             endSum = 0;
+            firstSumForFilterByPrice = 0;
+            lastSumForFilterByPrice = 0;
             searchQuery = null!;
             categoryService.GetAll();
             brandService.GetAll();
@@ -230,12 +233,15 @@ namespace trpo15_voroshilov.Pages
 
         private void MenuItemDelete_Click(object sender, RoutedEventArgs e)
         {
-            service.Remove(SelectedProduct);
+            if (MessageBox.Show($"Вы уверены что хотите удалить товар - {SelectedProduct.Name}?", "Удаление", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                service.Remove(SelectedProduct);
+            }
         }
 
         private void MenuItemView_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new ViewProductPage(SelectedProduct));
         }
 
         private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
@@ -245,12 +251,32 @@ namespace trpo15_voroshilov.Pages
 
         private void ProductsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            NavigationService.Navigate(new ViewProductPage(SelectedProduct));
         }
 
         private void newProduct_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AddEditProductPage(null));
+        }
+
+        private void SortByPrice_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validation.GetHasError(startBox) || Validation.GetHasError(endBox))
+            {
+                MessageBox.Show("Введите корректные данные!");
+                return;
+            }
+            if (startSum > endSum && endSum != 0)
+            {
+                MessageBox.Show("Стартовая цена не может быть больше конечной!");
+                return;
+            }
+            else
+            {
+                firstSumForFilterByPrice = startSum;
+                lastSumForFilterByPrice = endSum;
+                productsView.Refresh();
+            }
         }
     }
 }

@@ -22,10 +22,16 @@ namespace trpo15_voroshilov.Pages
     public partial class ViewProductPage : Page
     {
         private Product Product = new();
-        public ViewProductPage()
+        public ViewProductPage(Product _product)
         {
             InitializeComponent();
+            Product = _product;
             DataContext = Product;
+        }
+
+        private void BackBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }

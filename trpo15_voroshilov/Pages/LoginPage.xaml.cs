@@ -31,6 +31,7 @@ namespace trpo15_voroshilov.Pages
             if (pinCode == "1234")
             {
                 NavigationService.Navigate(new ClientPage(true));
+                MessageBox.Show("Для взаимодействия с товарами нажмите по ним ПКМ");
             }
             else
             {
