@@ -32,6 +32,8 @@ namespace trpo15_voroshilov.Pages
             {
                 NavigationService.Navigate(new ClientPage(true));
                 MessageBox.Show("Для взаимодействия с товарами нажмите по ним ПКМ");
+                Window window = Application.Current.MainWindow;
+                window.Title = "Каталог (менеджер)";
             }
             else
             {
@@ -42,6 +44,8 @@ namespace trpo15_voroshilov.Pages
         private void To_ClientPage(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ClientPage(false));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Каталог";
         }
     }
 }

@@ -106,6 +106,8 @@ namespace trpo15_voroshilov.Pages
                 SetProduct(Product, resetProduct);
             }
             NavigationService.GoBack();
+            Window window = Application.Current.MainWindow;
+            window.Title = "Каталог (менеджер)";
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
