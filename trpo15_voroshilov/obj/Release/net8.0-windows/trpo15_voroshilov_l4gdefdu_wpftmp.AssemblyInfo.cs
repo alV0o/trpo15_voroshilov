@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("trpo15_voroshilov")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+947b4780539b7bcfb52651da5097566f34065f90")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d9e9350596b705aa49da14442c433d2c3d987a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("trpo15_voroshilov")]
 [assembly: System.Reflection.AssemblyTitleAttribute("trpo15_voroshilov")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
