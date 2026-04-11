@@ -32,6 +32,8 @@ namespace trpo15_voroshilov.Pages
         private void BackBtn_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+            Window window = Application.Current.MainWindow;
+            window.Title = "Каталог";
         }
     }
 }

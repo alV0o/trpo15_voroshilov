@@ -195,18 +195,24 @@ namespace trpo15_voroshilov.Pages
         {
             Category c = new();
             NavigationService.Navigate(new ManagerPage(c));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Страница категорий";
         }
 
         private void tagManager_Click(object sender, RoutedEventArgs e)
         {
             Tag t = new();
             NavigationService.Navigate(new ManagerPage(t));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Страница тегов";
         }
 
         private void brandManager_Click(object sender, RoutedEventArgs e)
         {
             Brand b = new();
             NavigationService.Navigate(new ManagerPage(b));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Страница брендов";
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -242,21 +248,29 @@ namespace trpo15_voroshilov.Pages
         private void MenuItemView_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new ViewProductPage(SelectedProduct));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Просмотр товара";
         }
 
         private void MenuItemEdit_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AddEditProductPage(SelectedProduct));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Редактирование товара";
         }
 
         private void ProductsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new ViewProductPage(SelectedProduct));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Просмотр товара";
         }
 
         private void newProduct_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new AddEditProductPage(null));
+            Window window = Application.Current.MainWindow;
+            window.Title = "Добавление товара";
         }
 
         private void SortByPrice_Click(object sender, RoutedEventArgs e)

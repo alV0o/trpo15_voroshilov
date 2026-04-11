@@ -20,6 +20,8 @@ namespace trpo15_voroshilov
         {
             InitializeComponent();
             MainFrame.Navigate(new Pages.LoginPage());
+            Window window = Application.Current.MainWindow;
+            window.Title = "Логин";
         }
     }
 }

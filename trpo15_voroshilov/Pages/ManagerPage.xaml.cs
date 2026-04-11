@@ -101,6 +101,8 @@ namespace trpo15_voroshilov.Pages
         private void backBtn_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+            Window window = Application.Current.MainWindow;
+            window.Title = "Каталог (менеджер)";
         }
 
         private void newItem_Click(object sender, RoutedEventArgs e)
